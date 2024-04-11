@@ -4,8 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import riccardo.U5W2D3.entites.Author;
 import riccardo.U5W2D3.services.AuthorService;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping ("/author")
@@ -38,5 +41,11 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private void deleteAuthor(@PathVariable long authorId){
         authorService.deleteAuthor(authorId);
+    }
+
+    @PostMapping ("/upload")
+    @ResponseStatus (HttpStatus.CREATED)
+    private String uploadImage(@RequestParam ("avatar")MultipartFile image) throws IOException {
+    return authorService.uploadImage(image);
     }
 }
