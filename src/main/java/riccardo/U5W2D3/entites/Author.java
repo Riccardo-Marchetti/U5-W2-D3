@@ -1,10 +1,8 @@
 package riccardo.U5W2D3.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,9 +15,11 @@ import java.util.List;
 public class Author {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Setter (AccessLevel.NONE)
     private long id;
 
     @OneToMany (mappedBy = "author")
+    @JsonIgnore
     private List<BlogPost> blogPosts;
 
     private String name;

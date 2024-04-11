@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import riccardo.U5W2D3.entites.BlogPost;
+import riccardo.U5W2D3.payloads.BlogPostPayload;
 import riccardo.U5W2D3.services.BlogPostService;
 
 @RestController
@@ -20,8 +21,8 @@ public class BlogPostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private BlogPost postBlog(@RequestBody BlogPost body, @RequestBody long id){
-        return blogPostService.saveBlogPost(body, id);
+    private BlogPost postBlog(@RequestBody BlogPostPayload body){
+        return blogPostService.saveBlogPost(body);
     }
 
     @GetMapping ("/{blogId}")
@@ -30,7 +31,7 @@ public class BlogPostController {
     }
 
     @PutMapping ("/{blogId}")
-    private BlogPost findBlogAndUpdate (@PathVariable long blogId, @RequestBody BlogPost body){
+    private BlogPost findBlogAndUpdate (@PathVariable long blogId, @RequestBody BlogPostPayload body){
         return blogPostService.findBlogByIdAndUpdate(blogId, body);
     }
 

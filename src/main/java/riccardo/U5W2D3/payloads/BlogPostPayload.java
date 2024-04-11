@@ -1,19 +1,11 @@
-package riccardo.U5W2D3.entites;
+package riccardo.U5W2D3.payloads;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
-@ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class BlogPostPayload {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private long idAuthor;
 
     private String category;
 
@@ -24,4 +16,6 @@ public class BlogPostPayload {
     private String content;
 
     private int readingTime;
+
+    private long idAuthor;
 }

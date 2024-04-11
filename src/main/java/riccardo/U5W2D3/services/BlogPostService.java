@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import riccardo.U5W2D3.entites.BlogPost;
+import riccardo.U5W2D3.payloads.BlogPostPayload;
 import riccardo.U5W2D3.exceptions.NotFoundException;
-import riccardo.U5W2D3.repositories.AuthorDAO;
 import riccardo.U5W2D3.repositories.BlogPostDAO;
 
 @Getter
@@ -20,29 +20,31 @@ public class BlogPostService {
     private BlogPostDAO blogPostDAO;
 
     @Autowired
-    private AuthorDAO authorDAO;
+    private AuthorService authorService;
+
     public Page<BlogPost> getBlogPostsList(int page, int size, String sortBy){
         if (size > 20) size = 20;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return this.blogPostDAO.findAll(pageable);
     }
 
-    public BlogPost saveBlogPost(BlogPost body, long id){
-        this.authorDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
-        return blogPostDAO.save(body);
+    public BlogPost saveBlogPost(BlogPostPayload body){
+        BlogPost blogPost = new BlogPost( body.getCategory(), body.getTitle(), body.getCover(), body.getContent(), body.getReadingTime(), authorService.findAuthorById(body.getIdAuthor()));
+        return blogPostDAO.save(blogPost);
     }
 
     public BlogPost findBlogById (long id){
         return this.blogPostDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public BlogPost findBlogByIdAndUpdate (long id, BlogPost blogPostUpdate){
+    public BlogPost findBlogByIdAndUpdate (long id, BlogPostPayload blogPostUpdate){
         BlogPost found = this.blogPostDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
         found.setCategory(blogPostUpdate.getCategory());
         found.setTitle(blogPostUpdate.getTitle());
         found.setCover(blogPostUpdate.getCover());
         found.setContent(blogPostUpdate.getContent());
         found.setReadingTime(blogPostUpdate.getReadingTime());
+        found.setAuthor(authorService.findAuthorById(blogPostUpdate.getIdAuthor()));
         return this.blogPostDAO.save(found);
     }
 

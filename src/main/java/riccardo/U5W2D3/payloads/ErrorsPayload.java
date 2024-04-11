@@ -1,4 +1,4 @@
-package riccardo.U5W2D3.exceptions;
+package riccardo.U5W2D3.payloads;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
